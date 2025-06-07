@@ -4,9 +4,7 @@ import random
 import hashlib
 import pyautogui
 import pygetwindow as gw
-import pytesseract
 import google.generativeai as genai
-import keyboard
 from dotenv import load_dotenv
 from PIL import Image, ImageOps
 from datetime import datetime
@@ -35,7 +33,7 @@ SCAN_INTERVAL = 30  # Seconds between checks
 
 # ===== INITIALIZATION =====
 genai.configure(api_key=GOOGLE_API_KEY)
-model = genai.GenerativeModel("gemini-1.5-flash")
+vision_model = genai.GenerativeModel("gemini-1.5-flash")
 
 # Track message history to avoid duplicates
 message_history = {}
