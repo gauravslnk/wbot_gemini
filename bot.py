@@ -17,28 +17,26 @@ WHATSAPP_WINDOW_TITLE = "WhatsApp"  # Might need adjustment for your language
 CHAT_AREA = (1369, 856, 336, 134)  # (left, top, width, height)
 
 # Gemini AI Settings
-GOOGLE_API_KEY = os.getenv("GEMINI_API_KEY")  # Renamed for clarity
+GOOGLE_API_KEY = os.getenv("GEMINI_API_KEY") 
 if not GOOGLE_API_KEY:
     raise ValueError("GEMINI_API_KEY is not set in .env file")
 
 # Response Settings
 REPLIES = [
     "Good morning! ☀️",
-    "GM detected. Coffee level: 0/10",
     "System.out.println('Morning spam received');",
     "if (morning) { coffee++; sleep--; }"
 ]
 REPLY_COOLDOWN = 300  # 5 minutes (seconds) between replies to same message
 SCAN_INTERVAL = 30  # Seconds between checks
 
-# ===== INITIALIZATION =====
 genai.configure(api_key=GOOGLE_API_KEY)
 vision_model = genai.GenerativeModel("gemini-1.5-flash")
 
 # Track message history to avoid duplicates
 message_history = {}
 
-# ===== CORE FUNCTIONS =====
+# Fuctions
 def focus_whatsapp():
     """Brings WhatsApp window to focus"""
     try:
@@ -51,7 +49,7 @@ def focus_whatsapp():
         if win.isMinimized:
             win.restore()
         win.activate()
-        time.sleep(1)  # Allow window to come to foreground
+        time.sleep(1) 
         return True
     except Exception as e:
         print(f"[!] Window focus error: {e}")
@@ -62,11 +60,10 @@ def get_chat_image():
     try:
         # Take screenshot and convert to RGB for consistency
         img = pyautogui.screenshot(region=CHAT_AREA)
-        img = ImageOps.exif_transpose(img)  # Fix orientation if needed
+        img = ImageOps.exif_transpose(img)  
         if img.mode != "RGB":
             img = img.convert("RGB")
             
-        # Save debug image with timestamp
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         debug_path = f"debug/debug_{timestamp}.png"
         os.makedirs("debug", exist_ok=True)
@@ -104,8 +101,8 @@ def send_reply():
     try:
         reply = random.choice(REPLIES)
         
-        # Simulate human typing with random delays
-        pyautogui.click()  # Ensure focus
+        # looks like someone is typing
+        pyautogui.click()  
         for char in reply:
             pyautogui.typewrite(char)
             time.sleep(random.uniform(0.05, 0.2))
@@ -117,7 +114,7 @@ def send_reply():
         print(f"[!] Reply failed: {e}")
         return False
 
-# ===== MAIN LOOP =====
+# main function
 def main():
     print("=== WhatsApp GM Bot Started ===")
     print(f"Configuration:")
@@ -146,13 +143,13 @@ def main():
             time.sleep(SCAN_INTERVAL)
             continue
             
-        # Analyze the message
+       
         if is_gm_message(chat_img):
             if send_reply():
                 message_history[img_hash] = time.time()
-                # Clean up old entries
+                
                 for h in list(message_history.keys()):
-                    if time.time() - message_history[h] > 86400:  # 24h retention
+                    if time.time() - message_history[h] > 86400: 
                         del message_history[h]
         else:
             print("[→] No GM detected")
