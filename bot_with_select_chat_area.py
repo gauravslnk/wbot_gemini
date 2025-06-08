@@ -9,7 +9,7 @@ import google.generativeai as genai
 from dotenv import load_dotenv
 from PIL import Image
 
-# Load environment variables
+# api set up
 load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 if not GOOGLE_API_KEY:
@@ -20,7 +20,7 @@ genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 # Tesseract OCR path
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"  # Update if needed
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 # Load chat_area config
 with open("config.json") as f:
@@ -34,7 +34,7 @@ replies = [
 # Track last message
 last_reply_hash = None
 
-# --- Functions ---
+# Functions 
 
 def focus_whatsapp():
     try:
@@ -48,7 +48,7 @@ def focus_whatsapp():
 
 def get_chat_text():
     img = pyautogui.screenshot(region=chat_area)
-    img_gray = img.convert("L")  # improve OCR accuracy
+    img_gray = img.convert("L") 
     text = pytesseract.image_to_string(img_gray)
     return text.strip()
 
@@ -84,7 +84,7 @@ def send_reply():
 def hash_text(text):
     return hash(text)
 
-# --- Main loop ---
+# main
 while True:
     print("\n[⏳] Checking for new messages...")
     if focus_whatsapp():
@@ -100,4 +100,4 @@ while True:
     else:
         print("[!] WhatsApp window not accessible.")
 
-    time.sleep(600)  # wait 10 minutes
+    time.sleep(60)  # wait 1 minutes
