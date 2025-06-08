@@ -1,3 +1,4 @@
+# other way to get screen coordinates
 import pyautogui
 import time
 
