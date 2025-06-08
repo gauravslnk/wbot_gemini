@@ -1,3 +1,4 @@
+# use this if you want to select screen coodinates using a screenshot method
 import tkinter as tk
 from PIL import ImageGrab
 import json
