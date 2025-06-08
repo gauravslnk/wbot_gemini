@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 from PIL import Image, ImageOps
 from datetime import datetime
 
-# ===== CONFIGURATION =====
 load_dotenv()
 
 # WhatsApp Window Settings
